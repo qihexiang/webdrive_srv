@@ -12,9 +12,9 @@ import listDir from "./dao/listDir";
  * - GET [dirpath]：列出特定路径下的文件和文件夹
  * - POST [dirpath]：在指定路径下创建新的文件夹
  */
-const dir = Router()
+const dirRoute = Router()
 
-dir.get("/:dirpath(*{0,})", async (req, res) => {
+dirRoute.get("/:dirpath(*{0,})", async (req, res) => {
     const dirpath = req.params["dirpath"]
     const fullPath = join(FILE_ROOT, dirpath)
     try {
@@ -27,4 +27,4 @@ dir.get("/:dirpath(*{0,})", async (req, res) => {
     }
 })
 
-export default dir
+export default dirRoute

@@ -1,6 +1,6 @@
 import express from "express"
 import fileRoute from "./file";
-import dir from "./directory";
+import dirRoute from "./directory";
 
 const app = express();
 
@@ -9,6 +9,6 @@ app.get("/", (req, res) => {
 })
 
 app.use("/file", fileRoute)
-app.use("/dir", dir)
+app.use("/dir", dirRoute)
 
 app.listen(8080)
