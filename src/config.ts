@@ -1,1 +1,1 @@
-export const FILE_ROOT = "C:\\Users\\qihex\\Nextcloud"
+export const FILE_ROOT: string = process.env["WD_ROOT"]!
