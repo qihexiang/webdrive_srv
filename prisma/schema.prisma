@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int         @id @default(autoincrement())
+  username    String      @unique @db.VarChar(255)
+  password    String      @db.VarChar(255)
+  groups      UserGroup[]
+  directories Directory[]
+  files       File[]
+}
+
+model Group {
+  id          Int         @id @default(autoincrement())
+  groupname   String      @unique @db.VarChar(255)
+  users       UserGroup[]
+  directories Directory[]
+  files       File[]
+}
+
+model UserGroup {
+  id      Int   @id @default(autoincrement())
+  userId  Int
+  user    User  @relation(fields: [userId], references: [id])
+  groupId Int
+  group   Group @relation(fields: [groupId], references: [id])
+
+  @@unique([userId, groupId])
+}
+
+enum Permission {
+  None
+  R
+  W
+  RW
+}
+
+model Directory {
+  id              Int         @id @default(autoincrement())
+  dirname         String      @db.VarChar(255)
+  parentId        Int?
+  parent          Directory?  @relation("subdirectory", fields: [parentId], references: [id])
+  childDir        Directory[] @relation("subdirectory")
+  ownerId         Int
+  owner           User        @relation(fields: [ownerId], references: [id])
+  groupId         Int
+  group           Group       @relation(fields: [groupId], references: [id])
+  groupPermission Permission
+  childFile       File[]
+}
+
+model File {
+  id              Int        @id @default(autoincrement())
+  filename        String     @db.VarChar(255)
+  parentId        Int
+  parent          Directory  @relation(fields: [parentId], references: [id])
+  ownerId         Int
+  owner           User       @relation(fields: [ownerId], references: [id])
+  groupId         Int
+  group           Group      @relation(fields: [groupId], references: [id])
+  groupPermission Permission
+}

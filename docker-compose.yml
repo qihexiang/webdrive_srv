@@ -1,0 +1,21 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_RANDOM_ROOT_PASSWORD: 1
+      MARIADB_USER: snc
+      MARIADB_DATABASE: webdrive
+      MARIADB_PASSWORD: 239jqwoi394iKLH
+    ports:
+      - 13307:3306
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
